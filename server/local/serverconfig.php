@@ -29,7 +29,9 @@
 	 * OTHER DEALINGS IN THE SOFTWARE.
 	 */
 
-$hostname = 'your.server.com';                      // the server hosting the scripts
+$hostname = 'yourserver.example.com';                      // the server hosting the scripts
+$server_port = '443';				    // Port HTTP is running on
+$use_ssl = TRUE;				    // Is this an HTTPS URL?
 $webuser = '';                                      // if you restricted /admin/ with .htaccess
 $webpwd = '';                                       // if you restricted /admin/ with .htaccess
 $downloadtodosurl = '/admin/symbolicate_todo.php';  // the path to the script delivering the todo list

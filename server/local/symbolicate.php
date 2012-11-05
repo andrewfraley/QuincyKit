@@ -41,11 +41,14 @@ include "serverconfig.php";
 
 function doPost($postdata)
 {
-    global $updatecrashdataurl, $hostname, $webuser, $webpwd;
+    global $updatecrashdataurl, $hostname, $webuser, $webpwd, $server_port, $use_ssl;
     
 	$uri = $updatecrashdataurl;
 	$host = $hostname;
-	$handle = fsockopen($host, 80, $errno, $errstr); 
+	$port = $server_port;
+	if($use_ssl) $host = "ssl://" . $host;
+
+	$handle = fsockopen($host, $port, $errno, $errstr); 
 	if (!$handle) { 
 		return 'error'; 
 	} 
@@ -84,15 +87,20 @@ function doPost($postdata)
 		return chop($responsecontent); 
 	} 
 } 
-    
+
+if ($use_ssl) {
+	$url_prefix = "https://";
+} else {
+	$url_prefix = "http://";
+}
 
 if ($webuser != "" && $webpwd != "")
 {
-    $downloadtodosurl = "http://".$webuser.":".$webpwd."@".$hostname.$downloadtodosurl;
-    $getcrashdataurl = "http://".$webuser.":".$webpwd."@".$hostname.$getcrashdataurl;
+    $downloadtodosurl = $url_prefix.$webuser.":".$webpwd."@".$hostname . ":".$server_port . $downloadtodosurl;
+    $getcrashdataurl = $url_prefix.$webuser.":".$webpwd."@".$hostname . ":".$server_port . $getcrashdataurl;
 } else {
-    $downloadtodosurl = "http://".$hostname.$downloadtodosurl;
-    $getcrashdataurl = "http://".$hostname.$getcrashdataurl;
+    $downloadtodosurl = $url_prefix.$hostname . ":".$server_port .$downloadtodosurl;
+    $getcrashdataurl = $url_prefix.$hostname . ":".$server_port . $getcrashdataurl;
 }
 
 
